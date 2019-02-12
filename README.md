@@ -88,12 +88,87 @@ After cloning a repo, a remote named `origin` is created by default that points 
 
 ## Standard Workflow
 
+Most of the time, when using Git, you stick to the "Standard Workflow." That is, the mantra that most people use to teach Git, "Add, Commit, Push." Git allows for collaboration, but it doesn't have any sort of autosave functionality like Google Docs or Office 365 do. Instead, you must first tell Git which files to save (Add), then tell Git when you want to save (Commit), and finally share the saved changes with the rest of your collaborators (Push). The result is a the typical workflow that has been drilled into many developers' heads for years. 
+
+![A diagram explainging how changes flow through the standard workflow](https://raw.githubusercontent.com/rachelcarmena/how-to-teach/master/git/add-commit-push.png)
+
+To understand how git actually works throughout this workflow, you need to understand the four locations where git operates:
+
+* Working Directory: This is the directory and subdirectory that is on your filesystem. This is where you do work. Git is unaware of changes you make here until you tell it to check for changes.
+* Staging Area: After making changes to files in the working directory, you tell Git to move those changes to the staging area. This acts as a place to organize what changes will and won't be used in the project.
+* Local Repository: This is the repository where changes are tracked. Changes from staging get packaged up and sent here, maintaining a local version history.
+* Remote Repository: Discussed above, this is where changes are maintained for the entire project. 
 
 ### Add
 
+Copies changes from the working directory to the staging area.
+
+```
+git add file.java
+```
+
+This command supports [glob patterns](https://github.com/begin/globbing). That is * and ** act as wildcards:
+
+```
+git add *.java
+```
+
+You can also use the `-A` flag to stage all changes
+
+```
+git add -A
+```
+
+After piecing together which files have changes that you want to commit, you can run `git status` to see a summary of any unstaged changes, or which changes have already been staged.
+
 ### Commit
 
+Once you have all of the changes that you want staged, you'll want to package them up so they can be referred to for future reference. This is done with the `commit` command. A **commit** is a snapshot of the state of the repository at a given time. Commits contain information including:
+
+* What the difference between files from this commit and the last commit
+* Who made those changes
+* When the changes were committed
+* A message describing what the changes are or why they were made
+* A SHA hash acting as a unique identifier
+* A reference to preview commits in the graph\*
+
+To create a commit, run:
+```
+git commit -m "A short meaningful description"
+```
+
+This packages up all of the changes staged in the staging area and updates the local repository with the new commit. After the commit is made, the local repository's history is updated to include the new commit. To see the history, run `git log`:
+```
+commit b5c9987185f5cff24010a5fdf230295e7589ba9d
+Author: Sean Levorse <smlevorse@msn.com>
+Date:   Thu Feb 7 11:44:46 2019 -0500
+
+    Initial commit
+```
+By default, you'll see a list of commits including the SHA, the Author, the time the commit was made, and the commit's message. You can use the up and down arrows to navigate through the log. Press `q` to quit and return to the command line. The log has many useful flags for obtaining information about commit history. Check out the [docs](https://git-scm.com/docs/git-log) to see some of the powerful ways to leverage this tool. 
+
+>\*Commits are often visualized as nodes in a directed graph. Each commit points to one or more commits that typically lead back to the first commit in a repository. Visualizing commits this way makes it easy to see how project changes branch out and come together. 
+
 ### Push
+
+Now that your changes have been made and committed to the local repository, you'll want to tell the remote repository about your changes so you can share them with your collaborators. This is done through the `push` command:
+
+```
+git push origin master
+```
+
+When pushing, you usually need to specify which remote and which branch to push to. If you want to set a default remote/branch for a local branch to push to, you can use the `-u` flag:
+```
+git push -u myFork master
+```
+
+**`git push` will fail if the remote repository's history differs from the local repository's history in a way that doesn't make sense.**
+
+For the most part, if a push fails, it means that someone else has pushed changes while you were working. To fix this, see Fetch and Push below. There are a handful of cases where a force push is necessary. However, a force push is quite dangerous and can cause you to make unfixable changes resulting in the loss of work. Force pushes should be used sparingly, done with care, and by convention are NEVER done on the master branch. Force pushing is telling git "I know you think the history should look like this, but you're wrong, my history is the truth, use this instead." To force push, use:
+```
+git push -f
+```
+
 
 ### Reset and Revert
 
