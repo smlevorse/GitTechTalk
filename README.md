@@ -38,8 +38,6 @@ git init
 
 You'll notice that this creates a `.git` folder where you ran the command. This folder contains all of the information Git needs to work its magic. For most cases, you won't need to modify this folder at all. Instead, all work should be done in the same directory that contains the `.git` directory. 
 
-## Clones
-
 ## Remotes
 ![Rex from Toy Story clicking a TV Remote](https://media.giphy.com/media/zlLydol7ndM7C/giphy.gif)
 
@@ -68,7 +66,28 @@ git remote add myFork https://github.com/username/forkRepo.git
 git push -u myFork master
 ```
 
+## Clones
+
+![A diagram demonstrating how cloning works](https://raw.githubusercontent.com/rachelcarmena/how-to-teach/master/git/clone.png)
+
+In Git, **cloning** is the act of copying a repository from some _remote_ location to a local dev environment. When you run `git clone`, it creates a new copy of the repo, that is, you do not need to run `git init` before cloning. There are two methods for cloning a repo, depending on which protocol you want to use:
+
+Over https:
+```
+git clone https://github.com/smlevorse/GitTechTalk.git
+```
+
+Over SSH:
+```
+git clone git@github.com:smlevorse/GitTechTalk.git
+```
+
+Typically https is easier to set up, but some companies may require you to use SSH.
+
+After cloning a repo, a remote named `origin` is created by default that points to wherever you cloned from. 
+
 ## Standard Workflow
+
 
 ### Add
 
