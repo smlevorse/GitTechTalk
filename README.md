@@ -36,7 +36,9 @@ git init
 ```
 ([init docs](https://git-scm.com/docs/git-init))
 
-You'll notice that this creates a `.git` folder where you ran the command. This folder contains all of the information Git needs to work its magic. 
+You'll notice that this creates a `.git` folder where you ran the command. This folder contains all of the information Git needs to work its magic. For most cases, you won't need to modify this folder at all. Instead, all work should be done in the same directory that contains the `.git` directory. 
+
+## Clones
 
 ## Remotes
 ![Rex from Toy Story clicking a TV Remote](https://media.giphy.com/media/zlLydol7ndM7C/giphy.gif)
@@ -65,3 +67,39 @@ git remote add myFork https://github.com/username/forkRepo.git
 ```
 git push -u myFork master
 ```
+
+## Standard Workflow
+
+### Add
+
+### Commit
+
+### Push
+
+### Reset and Revert
+
+## Fetch
+
+## Pull
+
+## .gitignore
+
+## Branching
+
+### Checkout
+
+### Merging
+
+### Merge Conflicts
+
+### Rebasing
+
+#### Rebase Interactive
+
+## Other Cool Git Commands
+
+## Cherry Pick
+
+## Further Learning
+
+## Useful Links
