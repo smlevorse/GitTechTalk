@@ -149,6 +149,12 @@ By default, you'll see a list of commits including the SHA, the Author, the time
 
 >\*Commits are often visualized as nodes in a directed graph. Each commit points to one or more commits that typically lead back to the first commit in a repository. Visualizing commits this way makes it easy to see how project changes branch out and come together. 
 
+### HEAD
+
+HEAD is a concept you will see come up frequently when working with Git, especially if you seek out help on sites like StackOverflow. To put it simply, HEAD always refers to the newest commit on the current branch. People often call it a "pointer to the tip of the current branch."
+
+HEAD is a [reference](https://git-scm.com/book/en/v2/Git-Internals-Git-References), and there are several other similar refernces, such as MERGE_HEAD that are relvant. But HEAD is the most common and it's worth mentioning here. 
+
 ### Push
 
 Now that your changes have been made and committed to the local repository, you'll want to tell the remote repository about your changes so you can share them with your collaborators. This is done through the `push` command:
@@ -169,8 +175,32 @@ For the most part, if a push fails, it means that someone else has pushed change
 git push -f
 ```
 
-
 ### Reset and Revert
+
+Mistakes happen. Bugs pop up. Experiments fail. To err is to human. But fortunately Git has your back. There are two useful commands that leverage the version control aspects of Git to rectify mistakes in the project. 
+
+#### Reset
+
+Git [reset](https://git-scm.com/docs/git-reset) sets files in your working directory to the status they were at a given point in time. By default, `git reset` resets the working directory to HEAD. 
+
+```
+git reset --hard
+```
+will undo any local changes. The `--hard` tells git it can overwrite the working directory. 
+
+```
+git reset --hard eac1380
+```
+You can tell Git to reset the working directory to the state of a specific commit. Note, if you try to push from this point, the push will fail because the remote has commits the local repository does not. 
+
+You can also reset individual files.
+```
+git reset --hard eac1380 README.md
+```
+
+#### Revert
+
+
 
 ## Fetch
 
