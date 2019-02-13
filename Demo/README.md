@@ -120,9 +120,71 @@ git log
 
 Notice how your old commit `Deleted some lines` is still there with a new commit `Reverted Deleted some lines` on top. `revert` undoes the work for you without modifying the git history.
 
+Push your changes to update the remote with the new history
+
+```
+git push
+```
+
 ## Fetch and Pull
 
-There may be some chages in `origin` that aren't in your branch. For example, it looks like your collaborator, Tim, has added some work in his branch, `tims-branch`.
+It's difficult to simultate changes in a remote with only one clone. If you would like to see how this works, create a second clone of the repo, this time from your remote
 
+```
+git clone <<YOUR_FORK_URL>>
+cd GitTechTalk
+```
 
+Open up `Demo/rit.md` in this new clone and insert some stuff at the end of the file. Stage and commit these changes, and push them to your remote
+```
+git add -A
+git commit -m "Added information"
+git push origin master
+```
+
+Now go back to your original cloned directory and fetch the changes
+```
+git fetch myFork
+```
+
+If you check your status you'll notice that your local repo is behind in commits from the remote
+```
+git status
+On branch master
+Your branch is behind master by 1 commits.
+ (use "git pull" to merge the remote branch into yours)
+```
+
+To take in these new commits, run
+```
+git pull myFork master
+```
+Now your repository is up to date
+
+## Ignoring files
+
+Create a file in `Demo/` called `.gitignore`. This file should contain one line:
+```
+# .gitignore
+*.config
+```
+
+Stage and commit this file and push it to your remote
+```
+git add .gitignore
+git commit -m "Created a gitignore"
+git push myFork master
+```
+
+Now create a file in `Demo` called `myfork.config` and put anything you want in it. See what happens when you try to stage this file:
+```
+git add Demo/myfork.config
+The following paths are ignored by one of your .gitignore files:
+Demo/myfork.config
+Use -f if you really want to add them.
+```
+
+Now git will ignore any files that end in `.config` within the Demo folder.
+
+## Branching
 
