@@ -1,6 +1,6 @@
 # GitTechTalk
 
-Resources for a Git tech talk for RIT's Society of Software Engineers. Big thanks to [@kahliloppenheimer](https://github.com/kahliloppenheimer) for teaching me advanced Git, and Rachel Carmena for creating [How to Teach Git](https://rachelcarmena.github.io/2018/12/12/how-to-teach-git.html). 
+Suplemental resources for a Git tech talk for RIT's Society of Software Engineers. Big thanks to [@kahliloppenheimer](https://github.com/kahliloppenheimer) for teaching me advanced Git, and Rachel Carmena for creating [How to Teach Git](https://rachelcarmena.github.io/2018/12/12/how-to-teach-git.html). 
 
 ## Git What?
 
@@ -315,13 +315,13 @@ This creates a branch at the current commit HEAD is pointing to. However, this b
 The `git checkout` command switches to a new branch. HEAD gets moved to the target of the checkout command.
 
 ```
-git checkout feature
+git checkout update-colors
 ```
 
 Alternatively, if you want to create a new branch and switch to that branch in one command, use the `-b` flag:
 
 ```
-git checkout -b my-new-branch
+git checkout -b update-colors
 ```
 
 Additionally, you can checkout individual files from a branch:
@@ -343,7 +343,60 @@ It's worth noting that if you have unstaged changes that will be overwritten by 
 
 ### Merging
 
+![A gif of two armies running at each other and colliding captioned "Git Merge"](https://media.giphy.com/media/cFkiFMDg3iFoI/giphy.gif)
+
+So now that you have your branch with changes on it, you'll want a way to _merge_ those changes back into your `master` branch. You can merge any two branches with the `git merge` command. Merging works by creating a new commit with the changes from both branches that points back to the previous tips of both branches. This new commit is added to the branch that is currently checkout out. Technically, the other branch is not deleted and can continue to be used after the merge. 
+
+The to merge `branchB` into `branchA`, it would look like this:
+```
+git checkout branchA
+git merge branchB
+```
+
+Mergin can be visualized like this
+![A graph showing a master branch, the feature branch, and a new commit on Master pointing to the previous tips of both branches](https://wac-cdn.atlassian.com/dam/jcr:83323200-3c57-4c29-9b7e-e67e98745427/Branch-1.png?cdnVersion=kz)
+
+Now, there's a chance that some of the changes in both branches overlap. If this is the case, Git might not be able to merge. If this happens, you will encounter a merge conflict. They can be overwhelming at first, but you get used to understanding the best way to manually merge files. 
+
 ### Merge Conflicts
+
+When a merge conflic occurs, you'll notice that Git will replace some of the lines in your files with its own stuff. These are the lines where the merge conflicts occur. Once a conflict occurs, run `git status` to see which files have conflicts. Merge conflicts look like this:
+
+```
+# myFile.txt
+here's some lines
+...
+<<<<<<< HEAD
+This is a line that someone added to the master branch
+=======
+This is a line I added in my feature branch
+>>>>>>> The commit message from my last commit
+the rest of the file is here
+Notice how it is untouched by Git
+```
+
+Merge conflicts are easy to spot because of the distinctive seven less-thans, greater-thans, and equals-signs. This is where you have to use your brain to manually merge the conflict. Sometimes it's as simple as keeping one of the changes. Other times you'll want to find a way to incorporate both changes. In the end, you'll probably want to delete the lines with the greater-thans, less-thans, and equals. 
+
+Once you resolve the conflicts in your files (or if you just want git to stop yelling at you), simply stage the files that have conflicts with `git add` and continue with the merge:
+
+```
+git add -A
+git merge --continue
+```
+
+Additionally, you can use a built in merging strategy to mitigate the number of merge conflicts you encounter. 
+```
+git merge feature --strategy=ours
+```
+This line will merge the feature branch, but discard any changes in `feature` that conflict with our branch.
+
+```
+git merge feature --strategy=theirs
+```
+This line will merge the feature branch, and discare any changes in our branch that cause conflicts. 
+
+There is a multitude of merging strategies available. Check out the [doc](https://git-scm.com/docs/git\-merge#\_merge\_strategies
+) to learn more. 
 
 ### Rebasing
 
