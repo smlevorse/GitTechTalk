@@ -2,6 +2,8 @@
 
 Suplemental resources for a Git tech talk for RIT's Society of Software Engineers. Big thanks to [@kahliloppenheimer](https://github.com/kahliloppenheimer) for teaching me advanced Git, and Rachel Carmena([@rachelcarmena](https://github.com/rachelcarmena)) for creating [How to Teach Git](https://rachelcarmena.github.io/2018/12/12/how-to-teach-git.html). 
 
+To walk through the Demo that goes with the talk, checkout the [Demo folder](Demo/README.md)
+
 ## Git What?
 
 [Git](https://www.git-scm.com/) is a **Distributed Version Control** system. It runs across multiple devices on many platforms to allow teams and individuals to collaborate and track changes in a project. Typically, Git is used for programming poroject, but it works well with any text file based projects. Git was created by Linus Torvalds in 2005 who created it to help with maintaining Linux([Source](https://www.ted.com/talks/linus_torvalds_the_mind_behind_linux/transcript?language=en#t-519630)). Today, Git has grown into one of the most widely used version control systems with heavy influence from the Free and Open Source Software movement. 
@@ -616,7 +618,7 @@ This is useful for:
 
 Practice!
 
-![Git Gud](https://media.giphy.com/media/10CopumcRWLMYM/giphy.gif)
+![Git Good](https://i.giphy.com/media/10CopumcRWLMYM/giphy.webp)
 
 ## Useful Links
 
@@ -629,8 +631,3 @@ Practice!
 [How to write a good commit message](https://chris.beams.io/posts/git-commit/)
 
 [Funny commit messages](https://whatthecommit.com)
-
-
-
-
-
