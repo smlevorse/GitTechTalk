@@ -265,7 +265,127 @@ git merge --continue
 
 Now if you check the log on master, you'll see a merge commit that contains the changes from `tims-branch` and the changes from `master`
 
+## Some Cool commands
 
+### Ammending commits
 
+Change the commit message from the last commit
+```
+git commit --amend -m "Merged my work with Tim's"
+git push myFork master
+```
 
+### Stashing
+
+Switch back to your branch
+```
+git checkout my-branch
+```
+
+Make some changes to `rit.md` by adding more lines and save those change, but do not commit them. Instead, attempt to checkout `master`
+```
+git checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+        rit.md
+Please commit your changes or stash them before you switch branches.
+Aborting
+```
+
+Since there are changes in both `master` and `my-branch`, checking out master will overwrite those changes. To get around this, use `stash`
+```
+git stash
+Saved working directory and index state WIP on my-branch: 34b6ccb .
+HEAD is now at 34b6ccb
+git checkout master
+Switched to branch 'master'
+Everything up to date. 
+```
+
+Now if you want to get those changes back,
+```
+git checkout my-branch
+git stash pop
+```
+
+### Diff
+
+Diff can be used to show you the difference between the working directory and the previous commit
+```
+git diff
+```
+
+## Rebasing
+
+So now that Tim's work is in master, and master has advanced past where your branch was based off of, you may want to incorporate those changes into your branch. Do this using `rebase`:
+
+```
+git rebase master
+```
+
+Now open up `rit.md` to ensure that the merged work is in fact there. 
+
+After this, you'll want to update your remote repository to accept the new base
+
+```
+git push -f myFork my-branch
+```
+
+From this state, your branch can merge seamlesly into master.
+
+But before we do that, lets squash all of the commits
+
+## Rebase interactive
+
+Use `git log` to find the commit your branch was based off of. Rebase interactive does not include the commit you rebase onto.
+
+Once you find the commit, use 
+```
+git rebase 8a4ebc0 -i
+```
+
+This will open up your text editor and you'll be presented with a list of commits that will be rebased. It will look something like this:
+```
+pick eac1380 Created my awesome new feature
+pick 8d8a9d5 Whoops, found a bug
+pick 393dff4 and another
+pick 0902440 oops, please ignore
+pick a4b1f72 think I got it this time
+pick 19453bc I was wrong
+```
+
+Use your text editor to rewrite the file so that it looks like this:
+```
+r eac1380 Created my awesome new feature
+f 8d8a9d5 Whoops, found a bug
+f 393dff4 and another
+f 0902440 oops, please ignore
+f a4b1f72 think I got it this time
+f 19453bc I was wrong
+```
+
+Then save and close your text editor. Git will then open your text editor once again, prompting your for a new commit message for the first commit. Modify the commit message, save the file, and close your text editor again. 
+
+After the rebase completes, check the git log to see how this impacted your git history. Notice how all of your changes from this branch have become one commit. 
+
+## Cherry Pick
+
+Now pull down Mary's branch from the `origin`.
+```
+git pull marys-branch
+```
+
+You'll notice how there are several commits in this branch. Each commit adds a new file. However, let's say you only want to pull in the changes that include `ur.md`. 
+
+First, figure out which commit, you want to cherry pick
+```
+git log
+*** TODO *** get the real git log
+```
+
+Rather than merge and undo work, use Cherry-Pick
+```
+git cherry-pick ***TODO** Insert SHA
+```
+
+This creates a new commit on your branch with the changes from the cherry picked commit. 
 
