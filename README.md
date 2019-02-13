@@ -155,6 +155,16 @@ HEAD is a concept you will see come up frequently when working with Git, especia
 
 HEAD is a [reference](https://git-scm.com/book/en/v2/Git-Internals-Git-References), and there are several other similar refernces, such as MERGE_HEAD that are relvant. But HEAD is the most common and it's worth mentioning here. 
 
+Frequently, HEAD is used in conjunction with Revision Selection. In git, the `~` and `^` characters can be used to refer to a commit's parent commits. 
+
+```
+HEAD~ = The commit before the last commit
+HEAD~2 = Two commits ago
+HEAD~20 = 20 commits ago
+```
+
+The caret is more complicated, you can read more about revision selection [here](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection)
+
 ### Push
 
 Now that your changes have been made and committed to the local repository, you'll want to tell the remote repository about your changes so you can share them with your collaborators. This is done through the `push` command:
@@ -197,6 +207,11 @@ git reset --hard eac1380 README.md
 git reset --hard eac1380
 ```
 You can tell Git to reset the working directory to the state of a specific commit. Note, if you try to push from this point, the push will fail because the remote has commits the local repository does not. 
+
+This is where revision selection can be nice. If you know you want to reset to undo the last 3 commits, you can simply run 
+```
+git reset --hard HEAD~3
+```
 
 #### Revert
 
@@ -309,6 +324,11 @@ git branch branchname
 ```
 
 This creates a branch at the current commit HEAD is pointing to. However, this branch doesn't have any commits yet, it only exists as a potential branch. Any new commits will still be added to the old branch. To move to the new branch, use `checkout`.
+
+You can also delete a branch with:
+```
+git branch -d branch-to-delete
+```
 
 ### Checkout
 
@@ -438,6 +458,11 @@ Another useful tool is rebase interactive. Rebase interactive allows you to modi
 git rebase master -i --strategy=ours
 ```
 
+Typically, this is actually done by rebasing onto another commit:
+```
+git rebase 025ead7 -i
+```
+
 After running this command, your default text editor will pop up, prompting you with the commits that will be replayed during the rebase
 ```
 pick a4b1f72 Created file for examples
@@ -486,8 +511,124 @@ Date:   Tue Feb 12 11:36:06 2019 -0500
  
 ## Other Cool Git Commands
 
-## Cherry Pick
+### Ammending Commits
+
+Sometimes you've committed, but then realize that you forgot to stage one file. Or that you forgot to make one small change. Git lets you sneak in unnoticed and make those quick fixes without having to create a new commit.
+
+If you want to add changes to the last commit:
+```
+git add -A
+git commit --ammend --no-edit
+```
+The `--no-edit` flag means that you don't want to modify the commit message. You can also simply modify the last commit's message by ommitting this flag and not staging any changes. This is also useful for changing the log message for merge commits. 
+
+### Stash
+
+Sometimes you have files that are modified in your working directory, but you need to switch over to a different branch for a second. The `checkout` command doesn't let you change branches if you have uncommitted changes, but you're not ready to commit your work. To get around this, use `git stash`. The **stash** is a stack of psuedo-commit like changes that you are saving for later. 
+
+For example, lets say you've modified some files:
+```
+$ git checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+        myProject.c
+Please commit your changes or stash them before you switch branches.
+Aborting
+$ git stash
+Saved working directory and index state WIP on my-branch: 34b6ccb .
+HEAD is now at 34b6ccb
+$ git checkout master
+Switched to branch 'master'
+Everything up to date. 
+$
+```
+At this point, your changes have been stashed, which allows you to freely switch to another branch. 
+Once you're done and want to return back to your stashed work, simply return to that branch and run 
+```
+git stash pop
+```
+
+If you stash a lot of changes over a short period, it may get confusing which changeset you want to pop. You can see which changes belong to which branges with 
+```
+$ git stash list
+stash{@0}: WIP on my-branch: 34b6ccb .
+stash{@1}: WIP on toms-branch: 6f8a0cb .
+stash{@2}: WIP on my-branch: 98de8c1 .
+stash{@3}: WIP on cool-feature-bro: 93be4af .
+```
+
+Once you know which work in progress you want to pop, you can use 
+```
+git stash pop stash{@1}
+```
+to specify which changeset to pop.
+
+You can also remove changes from the stash with `git stash drop`, or  clear the entire stash with `git stash clear`
+
+### Removing files
+
+Sometimes you want to delete a file. Instead of deleting it from your directory using your operating system, use `git rm filename`. This stages the file for deletion in the next commit. 
+
+### Viewing changes
+
+Git has a tool to let you compare changes in your working directory to the local directory:
+```
+git diff
+```
+
+You can also compare branches:
+```
+git diff branch1..branch2
+```
+
+You can compare a specific file
+```
+git diff filename
+```
+
+The tool is really powerful. The documentation is pretty verbose, so I recommend [Atlassian's tutorial](https://www.atlassian.com/git/tutorials/saving-changes/git-diff)
+
+### Cherry Pick
+
+Sometimes you want to incorporate changes from a different branch without merging the entire brach. **Cherry Picking** is the act of copying changes from a single commit onto a branch. 
+
+```
+git cherry-pick 5b95470
+```
+
+This will take all of the changes from `5b95470` and create a new commit with the exact same changes on the current branch. 
+
+This is useful for:
+* Sandboxing changes on a different branch
+* Recovering corrupted branches
+* Manually merging selected changes
 
 ## Further Learning
 
+[Git Hooks](https://www.atlassian.com/git/tutorials/git-hooks)
+
+[Pull Requests/Merge Requests](https://help.github.com/articles/creating-a-pull-request/)
+
+[Protected Brances](https://help.github.com/articles/about-protected-branches/)
+
+[Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
+
+Practice!
+
+![Git Gud](https://media.giphy.com/media/10CopumcRWLMYM/giphy.gif)
+
 ## Useful Links
+
+[Git Documentation](https://git-scm.com/docs)
+
+[Atlassian Tutorials](https://www.atlassian.com/git/tutorials)
+
+[If command lines aren't your thing](https://www.gitkraken.com/)
+
+[How to write a good commit message](https://chris.beams.io/posts/git-commit/)
+
+[Funny commit messages](https://whatthecommit.com)
+
+
+
+
+
