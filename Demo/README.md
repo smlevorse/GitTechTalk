@@ -159,7 +159,7 @@ To take in these new commits, run
 ```
 git pull myFork master
 ```
-Now your repository is up to date
+Now your repository is up to date. If you open `rit.md`, you'll notice the changes that were made in the other clone.
 
 ## Ignoring files
 
@@ -187,4 +187,81 @@ Use -f if you really want to add them.
 Now git will ignore any files that end in `.config` within the Demo folder.
 
 ## Branching
+
+Create a new branch and check it out
+```
+git branch my-branch
+git checkout my-branch
+```
+
+Add a few more lines to `rit.md`, and create a commit
+```
+git add rit.md
+git commit -m "Included information about the SSE"
+```
+
+Do this a couple of times to develop in interseting history. Notice how if you check the log, the log now includes your branch and highlights the commit where the histories diverge. 
+
+You can use `checkout` to get back to the state from a few commits ago
+```
+git checkout HEAD~1
+```
+Notice how now you are in a detached HEAD state. This isn't very useful. So return to the tip of your branch.
+```
+git checkout my-branch
+```
+
+## Merging
+
+Notice how one of the projects collaborators has work done on a separate branch in `origin`, `tims-branch`. Pull this branch down into your local repo with 
+```
+git pull origin tims-branch
+```
+
+Now if you list your branches you should see `tims-branch`
+```
+git branch
+  master
+* my-branch
+  tims-branch
+```
+
+We want to incorporate the changes from `tims-branch` into our local master. To do this, run
+```
+git checkout master
+git merge tims-branch
+```
+
+It looks like Tim also modified the school colors. Since both you and Tim made different changes, Git isn't sure how to merge them. This is called a merge conflict. To see which files have a conflict, get the status
+```
+git status
+On branch master
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+      both modified:   Demo/rit.md
+      
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+This tells you that `Demo/rit.md` has merge conflicts. Open up `Demo/rit.md` to see what happened. 
+You'll notice that there's a merge conflict where the git 
+```
+ 16 <<<<<<< HEAD
+ 17 Colors | Orange and White
+ 18 =======
+ 19 Colors | White and Orange
+ 20 >>>>>>> tims-branch
+```
+
+Since this change is trivial, lets use it to practice merign strategies. Abort the merge and try again:
+```
+git merge --abort
+git merge tims-branch --strategy=ours
+```
+
+
 
