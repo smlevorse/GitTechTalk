@@ -13,7 +13,7 @@ Type | Private Doctoral University
 Established | 1829
 Endowment | $938.2 million
 Enrollment | 19,000
-Colors | Orange and Brown
+Colors | White and Orange
 Mascot | Ritchie
 
 Source: en.wikipedia.org/Rochester_institute_of_technology
