@@ -257,11 +257,15 @@ You'll notice that there's a merge conflict where the git
  20 >>>>>>> tims-branch
 ```
 
-Since this change is trivial, lets use it to practice merign strategies. Abort the merge and try again:
+Fix the merge conflict within the file by removing the unecessary info, save your changes, and continue with the merge:
 ```
-git merge --abort
-git merge tims-branch --strategy=ours
+git add rit.md
+git merge --continue
 ```
+
+Now if you check the log on master, you'll see a merge commit that contains the changes from `tims-branch` and the changes from `master`
+
+
 
 
 
