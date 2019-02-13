@@ -114,10 +114,15 @@ git commit -m "Deleted some lines"
 
 Now you've done it. The changes are there in the repo, and need to be undone manually. Or can git help us?
 ```
-git revert HEAD~1
+git revert HEAD
 git log 
 ```
 
+Notice how your old commit `Deleted some lines` is still there with a new commit `Reverted Deleted some lines` on top. `revert` undoes the work for you without modifying the git history.
+
+## Fetch and Pull
+
+There may be some chages in `origin` that aren't in your branch. For example, it looks like your collaborator, Tim, has added some work in his branch, `tims-branch`.
 
 
 
