@@ -400,8 +400,90 @@ There is a multitude of merging strategies available. Check out the [doc](https:
 
 ### Rebasing
 
+**Rebasing** is the act of changing which commit on a separate branch the current branch is based on. Remember that when you create a new branch, commits to the old branch are not integrated into the new branch. This creates two parallel histories that are equivalent before the branch. Rebasing allows you to merge changes from the base branch into the feature branch without merging those changes into the base branch. This is useful for long running feature changes that aren't done yet, but still need changes from other parts of the project. 
+
+Visually, rebasing takes a history that looks like this:
+![A git history with one main branch, and a side branch that is based on an early commit of the main branch](https://wac-cdn.atlassian.com/dam/jcr:01b0b04e-64f3-4659-af21-c4d86bc7cb0b/01.svg?cdnVersion=kz)
+
+And creates new commits that result in this:
+![A git history with one main branch and a side branch based off it its tip](https://wac-cdn.atlassian.com/dam/jcr:5b153a22-38be-40d0-aec8-5f2fffc771e5/03.svg?cdnVersion=kz)
+
+> Rebasing often limits the number of merge conflicts that arise when eventually merging the feature branch back to the base branch
+
+So how do we rebase?
+
+```
+git checkout feature
+git rebase master
+```
+This command sequence unwinds all of the commits on `feature`, starts at the tip of `master`, and replays the commits from `feature` onto the fresh branch. Merge conflicts can still occur while rebasing. However, when rebasing, merge conflicts arise commit by commit. So you may fix the merge conflicts for one commit, continue the rebase, and encounter more merge conflicts. However, by using rebase, the merge conflicts happens in a more conceptually sequential order which can often be easier to work through. 
+
+Like with merging, when you encounter a merge conflict, you must resolve the conflicts in your files, stage the changes with `git add`, and then run 
+```
+git rebase --continue
+```
+to continue with the rebase. 
+
+Rebase also allows you to specify a merge strategy:
+```
+git rebase master --strategy=ours
+```
+However, keep in mind that "ours" refers to the base branch and "theirs" refers to the feature branch. 
+
 #### Rebase Interactive
 
+Another useful tool is rebase interactive. Rebase interactive allows you to modify the commits as they get reapplied. To start an interactive rebase, add the `-i` flag to your rebase command. 
+
+```
+git rebase master -i --strategy=ours
+```
+
+After running this command, your default text editor will pop up, prompting you with the commits that will be replayed during the rebase
+```
+pick a4b1f72 Created file for examples
+pick c5f793c Added information about Checkout
+```
+Here, each line represents the commands that are run from top to bottom. You can re-order the commits if you so please. You can even insert shell commands between commits! If you remove a line, that commit will be deleted. By default, each commit starts with the `pick` command. However, you can change this to be any of the following
+
+* `pick` or `p` - Keep this commit
+* `reword` or `r` = keep this commit, but edit the commit message
+* `edit` or `e` = keep this commit, but stop for amending
+* `squash` or `s` = keep the changes from this commit, but add them into the last commit and merge their messages
+* `fixup` or `f` = like "squash", but discard this commit's log message
+* `exec` or `x` = run command (the rest of the line) using shell
+* `drop` or `d` = remove commit
+
+Make the changes to the file, save, and close your text editor to begin the interactive rebase.
+
+For the case of `reword`, when the rebase reaches that commit, your text editor will open again to get the new commit message. 
+
+For the case of `edit`, the rebase will pause and allow you to run `git commit --ammend` commands or make changes to the working directory. Run `git rebase --continue` to continue.
+
+Typically, this is used to compress a bunch of related commits into one single, organized commit:
+
+```
+p eac1380 Created my awesome new feature
+f 8d8a9d5 Whoops, found a bug
+f 393dff4 and another
+f 0902440 oops, please ignore
+f a4b1f72 think I got it this time
+f 19453bc I was wrong
+f 15fb666 So close
+f 87394d7 almost there
+f c5f793c dagqaiethnkjfdn
+f 025ead7 FINALLY
+```
+After the rebase, all of these commits that tell a wonderful journey of toil and strife get squashed down to one single commit:
+```
+commit eac1380c73f8a47d6475ead014aaa61dc0a7abf5
+Author: Sean Levorse <smlevorse@msn.com>
+Date:   Tue Feb 12 11:36:06 2019 -0500
+
+    Created my awesome new feature
+```
+
+> Note: After rebasing, it is likely that the commit history on your local machine does not match the commit history in the remote repository. This is where `git push -f` comes in handy. 
+ 
 ## Other Cool Git Commands
 
 ## Cherry Pick
