@@ -1,6 +1,6 @@
 # GitTechTalk
 
-Suplemental resources for a Git tech talk for RIT's Society of Software Engineers. Big thanks to [@kahliloppenheimer](https://github.com/kahliloppenheimer) for teaching me advanced Git, and Rachel Carmena for creating [How to Teach Git](https://rachelcarmena.github.io/2018/12/12/how-to-teach-git.html). 
+Suplemental resources for a Git tech talk for RIT's Society of Software Engineers. Big thanks to @kahliloppenheimer for teaching me advanced Git, and Rachel Carmena for creating [How to Teach Git](https://rachelcarmena.github.io/2018/12/12/how-to-teach-git.html). 
 
 ## Git What?
 
