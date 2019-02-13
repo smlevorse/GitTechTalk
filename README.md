@@ -612,6 +612,8 @@ This is useful for:
 
 [Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
 
+[Dry Runs](https://coderwall.com/p/8dyicg/dry-run-in-git)
+
 Practice!
 
 ![Git Gud](https://media.giphy.com/media/10CopumcRWLMYM/giphy.gif)
