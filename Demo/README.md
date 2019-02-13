@@ -379,12 +379,31 @@ You'll notice how there are several commits in this branch. Each commit adds a n
 First, figure out which commit, you want to cherry pick
 ```
 git log
-*** TODO *** get the real git log
+commit 4cd8e1ce13976d064bdcdfb62bf57d2a38db138e
+Author: Sean Levorse <smlevorse@msn.com>
+Date:   Wed Feb 13 14:08:00 2019 -0500
+
+    Nazareth College
+
+commit bb7f6e2719f6e0d99b1086544c1fd7a2a0d93384
+Author: Sean Levorse <smlevorse@msn.com>
+Date:   Wed Feb 13 14:06:49 2019 -0500
+
+    University of Rochester
+
+commit c08660e18a1cadfd4bd88fa0c2aa7485eca9e4cb
+Author: Sean Levorse <smlevorse@msn.com>
+Date:   Wed Feb 13 14:05:55 2019 -0500
+
+    St. John Fisher
+
 ```
+
+Notice that you want commit `bb7f6e2719f6e0d99b1086544c1fd7a2a0d93384`, or `bb7f6e2`
 
 Rather than merge and undo work, use Cherry-Pick
 ```
-git cherry-pick ***TODO** Insert SHA
+git cherry-pick bb7f6e2
 ```
 
 This creates a new commit on your branch with the changes from the cherry picked commit. 
