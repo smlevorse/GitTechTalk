@@ -274,11 +274,72 @@ Rebasing can be more involved, but may have the desired effect in the long run.
 
 ## .gitignore
 
+Some files you don’t want to commit to the remote. For example, JetBrains IDE's produce a .idea folder that often means nothing to the project. Git provides a way to denote files that it should not track. To do this, create a text file titled `.gitignore`. One `.gitignore` applies to the directory it is placed in and its children. 
 
+Each line of the file is a [glob pattern](https://github.com/begin/globbing) of which files to ignore
+
+Lines that start with # are comments
+
+Must include the trailing / for directories
+
+```
+*.o
+.idea/
+id_rsa
+```
+
+Some IDEs will autogenerate a .gitignore appropriate for your project.
+
+For help creating your own `.gitignore`, check out the [documentation](https://git-scm.com/docs/gitignore).
 
 ## Branching
 
+Sometimes you want to work on a large change that might take some time, involve several commits, and could intefer with other work on the project. This is where _branching_ comes in. **Brancing** is the process of making changes on a separate sequence of commits from the main stream of commits (a.k.a. `master`). 
+
+The `git branch` command will list all available branches, and denote the current branch with an asterisk `*`. HEAD always points to the tip of the current branch. 
+```
+$ git branch
+  feature
+* master
+```
+
+To create a branch:
+```
+git branch branchname
+```
+
+This creates a branch at the current commit HEAD is pointing to. However, this branch doesn't have any commits yet, it only exists as a potential branch. Any new commits will still be added to the old branch. To move to the new branch, use `checkout`.
+
 ### Checkout
+
+The `git checkout` command switches to a new branch. HEAD gets moved to the target of the checkout command.
+
+```
+git checkout feature
+```
+
+Alternatively, if you want to create a new branch and switch to that branch in one command, use the `-b` flag:
+
+```
+git checkout -b my-new-branch
+```
+
+Additionally, you can checkout individual files from a branch:
+
+```
+git checkout master README.md
+```
+
+After checking out a single file, you can then stage it to be committed to the current branch.
+
+Lastly you can checkout a commit instead of checking out the tip of a branch:
+```
+git checkout eac1380
+```
+
+> Note: If you checkout a commit, you enter a state called a 'detached HEAD' state. What this basically means is HEAD isn't pointing to the tip of a branch. Any new commit here do not belong to any branch, however they will form their own untracked branched off of the commit that you checked out. Once you go back to the tip of a branch, this untracked branch can be garbage collected. To preserve these commits, run `git checkout -b newBranchName`. This will create a new branch that is tracked by Git and contains the commits that were made to the detached HEAD
+
+It's worth noting that if you have unstaged changes that will be overwritten by a checkout, Git will force to to either commit them or [stash](https://git-scm.com/docs/git-stash) them before you are allowed to checkout. (Stashing is covered below)
 
 ### Merging
 
