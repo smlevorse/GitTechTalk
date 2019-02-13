@@ -188,25 +188,93 @@ git reset --hard
 ```
 will undo any local changes. The `--hard` tells git it can overwrite the working directory. 
 
-```
-git reset --hard eac1380
-```
-You can tell Git to reset the working directory to the state of a specific commit. Note, if you try to push from this point, the push will fail because the remote has commits the local repository does not. 
-
 You can also reset individual files.
 ```
 git reset --hard eac1380 README.md
 ```
 
+```
+git reset --hard eac1380
+```
+You can tell Git to reset the working directory to the state of a specific commit. Note, if you try to push from this point, the push will fail because the remote has commits the local repository does not. 
+
 #### Revert
 
+Like `reset`, `revert` also returns the repository to a previous state. However, it does so by creating a new commit that undoes all of the changes between the current state and the desired commit. This allows you to return to a previous state without having to rewrite history. This means that the decision to undo certain changes is documented in the git history
 
+Visually, the difference looks like this. Git reset looks like this:
+![Diagram of a commit history before and after resetting](https://wac-cdn.atlassian.com/dam/jcr:4c7d368e-6e40-4f82-a315-1ed11316cf8b/02-updated.png?cdnVersion=kz)
+
+While Git revert looks like this:
+![Diagram of commit history before and after reverting](https://wac-cdn.atlassian.com/dam/jcr:73d36b14-72a7-4e96-a5bf-b86629d2deeb/06.svg?cdnVersion=kz)
+
+([Credit Atlassian for the images](https://www.atlassian.com/git/tutorials/resetting-checking-out-and-reverting))
+
+In general, reset is used to undo local changes while revert is used to undo remote changes.
 
 ## Fetch
 
+![Gif from Mean Girls movie with the caption That's so Fetch](https://media.giphy.com/media/xT9KVF4zNt70nyNpi8/giphy.gif)
+
+Fetch is used to update your local repository with changes from a remote that aren't incorporated into your local repository. It's worth noting here that a branch in your local repository and a branch in your remote repository with the same name are still considered separate branches. 
+
+Usage:
+```
+git fetch remotename
+```
+If you ommit the remote name, it will default to `origin`.
+
+You can fetch multiple remotes at the same time:
+```
+git fetch origin myFork
+```
+
+Or you can fetch all remotes
+```
+git fetch --all
+```
+
+Fetching does not update your working directory. Git is aware of any updates, but they are not applied.
+
+![A diagram showing changes being copied from the remote repository to the local repo](https://raw.githubusercontent.com/rachelcarmena/how-to-teach/master/git/fetch.png)
+
 ## Pull
 
+Git pull is the more popular option. It is functionally equivalent to `fetch` + `merge` (We'll talk about merge later on). This means that when you `git pull`, your working directory is updated as well to include any changes on your branch from remote that aren't in your working branch. Only the current active branch is merged. 
+```
+git pull remotename
+```
+If you don't specify a remote, it will default to `origin`.
+
+Since changes in your local directory might touch changes in the remote repository, it's possible that pulling gives you a merge conflict. You have three options:
+
+* Deal with the merge conflict (see Merge Conflicts below):
+
+This is the better option since it means you have the option to incorporate your changes and you aren't pushing the conflict off for later
+
+* Force pull
+```
+git pull -f
+```
+This option overwrites whatever is in your repository, but it makes sure that you are up to date
+
+* Abort the merge
+```
+git merge --abort
+```
+This option does not solve anythong other than the existing merge conflicts. 
+
+Additionally, there's an option to pull and rebase (rebasing is explained below). This is functionally equivalent to `git fetch` + `git rebase`:
+
+```
+git pull --rebase
+```
+
+Rebasing can be more involved, but may have the desired effect in the long run. 
+
 ## .gitignore
+
+
 
 ## Branching
 
